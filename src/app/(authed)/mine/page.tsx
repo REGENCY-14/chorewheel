@@ -1,6 +1,6 @@
 import { getCurrentMember } from "@/lib/session";
 import { getCycleAssignments, getLatestCycle } from "@/lib/cycle-data";
-import { StatusBadge } from "@/components/StatusBadge";
+import { Ticket } from "@/components/Ticket";
 import { MarkDoneButton } from "@/components/MarkDoneButton";
 import { PollingRefresher } from "@/components/PollingRefresher";
 
@@ -16,9 +16,9 @@ export default async function MinePage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-semibold">My chores</h1>
+        <h1 className="text-2xl font-bold">My chores</h1>
         {cycle && (
-          <p className="text-sm text-black/60 dark:text-white/60">
+          <p className="text-sm text-fg/70">
             Cycle #{cycle.number} · due {new Date(cycle.deadlineAt).toLocaleString()}
           </p>
         )}
@@ -27,25 +27,25 @@ export default async function MinePage() {
       <PollingRefresher />
 
       {rows.length === 0 && (
-        <p className="text-sm text-black/60 dark:text-white/60">
-          No chores assigned to you this cycle.
+        <p className="text-sm text-fg/70">
+          Nothing on your list this cycle — check back once the next one is generated.
         </p>
       )}
 
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-3">
         {rows.map((row) => (
-          <li
+          <Ticket
             key={row.assignmentId}
-            className="flex items-center justify-between rounded-lg border border-black/10 px-4 py-3 dark:border-white/10"
-          >
-            <div>
-              <p className="font-medium">{row.choreName}</p>
-              <StatusBadge status={row.status} />
-            </div>
-            {(row.status === "pending" || row.status === "rejected") && (
-              <MarkDoneButton completionId={row.completionId} />
-            )}
-          </li>
+            choreName={row.choreName}
+            memberId={row.memberId}
+            memberName={row.memberName}
+            status={row.status}
+            actions={
+              (row.status === "pending" || row.status === "rejected") && (
+                <MarkDoneButton completionId={row.completionId} />
+              )
+            }
+          />
         ))}
       </ul>
     </div>

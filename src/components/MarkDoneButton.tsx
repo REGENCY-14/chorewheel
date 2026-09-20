@@ -30,15 +30,15 @@ export function MarkDoneButton({ completionId }: { completionId: string }) {
   }
 
   return (
-    <div className="flex flex-col items-end gap-1">
+    <div className="flex w-full flex-col items-stretch gap-1 sm:w-auto sm:items-end">
       <button
         onClick={markDone}
         disabled={pending}
-        className="rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-black"
+        className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-fg transition-colors hover:opacity-90 disabled:opacity-60"
       >
         {pending ? "Marking…" : "Mark done"}
       </button>
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-rejected">{error}</p>}
     </div>
   );
 }

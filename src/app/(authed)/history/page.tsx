@@ -1,6 +1,6 @@
 import { getCurrentMember } from "@/lib/session";
 import { getCycleAssignments } from "@/lib/cycle-data";
-import { StatusBadge } from "@/components/StatusBadge";
+import { Ticket } from "@/components/Ticket";
 import { db } from "@/db";
 import { cycles } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
@@ -24,29 +24,26 @@ export default async function HistoryPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-2xl font-semibold">History</h1>
+      <h1 className="text-2xl font-bold">History</h1>
 
       {cyclesWithRows.length === 0 && (
-        <p className="text-sm text-black/60 dark:text-white/60">No past cycles yet.</p>
+        <p className="text-sm text-fg/70">No past cycles yet — this fills in after the first one runs.</p>
       )}
 
       {cyclesWithRows.map(({ cycle, rows }) => (
-        <section key={cycle.id} className="flex flex-col gap-2">
-          <h2 className="font-medium">
+        <section key={cycle.id} className="flex flex-col gap-3">
+          <h2 className="text-sm font-semibold text-fg/70">
             Cycle #{cycle.number} · due {new Date(cycle.deadlineAt).toLocaleDateString()}
           </h2>
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-3">
             {rows.map((row) => (
-              <li
+              <Ticket
                 key={row.assignmentId}
-                className="flex items-center justify-between rounded-lg border border-black/10 px-4 py-3 dark:border-white/10"
-              >
-                <div>
-                  <p className="font-medium">{row.choreName}</p>
-                  <p className="text-sm text-black/60 dark:text-white/60">{row.memberName}</p>
-                </div>
-                <StatusBadge status={row.status} />
-              </li>
+                choreName={row.choreName}
+                memberId={row.memberId}
+                memberName={row.memberName}
+                status={row.status}
+              />
             ))}
           </ul>
         </section>

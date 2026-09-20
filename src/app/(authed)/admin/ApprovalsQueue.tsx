@@ -2,10 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Avatar } from "@/components/Avatar";
 
 type Approval = {
   completionId: string;
   choreName: string;
+  memberId: string;
   memberName: string;
   cycleNumber: number;
 };
@@ -37,35 +39,38 @@ export function ApprovalsQueue({ approvals }: { approvals: Approval[] }) {
   }
 
   if (approvals.length === 0) {
-    return <p className="text-sm text-black/60 dark:text-white/60">Nothing waiting on approval.</p>;
+    return <p className="text-sm text-fg/70">Nothing waiting on you right now.</p>;
   }
 
   return (
     <div className="flex flex-col gap-2">
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-3">
         {approvals.map((a) => (
           <li
             key={a.completionId}
-            className="flex items-center justify-between rounded-lg border border-black/10 px-4 py-2 dark:border-white/10"
+            className="flex flex-col gap-3 rounded-md border-l-4 border-l-review border-y border-r border-border bg-surface px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div>
-              <p className="font-medium">{a.choreName}</p>
-              <p className="text-sm text-black/60 dark:text-white/60">
-                {a.memberName} · cycle #{a.cycleNumber}
-              </p>
+            <div className="flex items-center gap-3">
+              <Avatar id={a.memberId} name={a.memberName} />
+              <div className="flex flex-col">
+                <span className="text-base font-semibold leading-tight">{a.choreName}</span>
+                <span className="text-sm text-fg/70">
+                  {a.memberName} · cycle #{a.cycleNumber}
+                </span>
+              </div>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => decide(a.completionId, "approved")}
                 disabled={pendingId === a.completionId}
-                className="rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+                className="flex-1 rounded-md bg-approved px-4 py-2 text-sm font-semibold text-paper transition-colors hover:opacity-90 disabled:opacity-50 sm:flex-none"
               >
                 Approve
               </button>
               <button
                 onClick={() => decide(a.completionId, "rejected")}
                 disabled={pendingId === a.completionId}
-                className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+                className="flex-1 rounded-md bg-rejected px-4 py-2 text-sm font-semibold text-paper transition-colors hover:opacity-90 disabled:opacity-50 sm:flex-none"
               >
                 Reject
               </button>
@@ -73,7 +78,7 @@ export function ApprovalsQueue({ approvals }: { approvals: Approval[] }) {
           </li>
         ))}
       </ul>
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-sm text-rejected">{error}</p>}
     </div>
   );
 }

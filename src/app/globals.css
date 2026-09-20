@@ -1,26 +1,103 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Named palette — the actual brand hues. Values shift slightly between
+     light/dark for contrast, but the names keep their role. */
+  --paper: #f5f4ef;
+  --ink: #232323;
+  --denim: #33506b;
+  --marigold: #e8a33d;
+  --moss: #5b7a5b;
+  --clay: #b5544a;
+
+  /* Semantic roles, built from the palette above. Components should
+     reach for these, not the raw palette, so theming is a token swap. */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --surface: #ffffff;
+  --surface-2: #ebe9e2;
+  --border: rgb(35 35 35 / 12%);
+  --accent: var(--denim);
+  --accent-fg: var(--paper);
+  --pending: var(--marigold);
+  --review: var(--denim);
+  --approved: var(--moss);
+  --rejected: var(--clay);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-instrument-sans);
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-denim: var(--denim);
+  --color-marigold: var(--marigold);
+  --color-moss: var(--moss);
+  --color-clay: var(--clay);
+
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-pending: var(--pending);
+  --color-review: var(--review);
+  --color-approved: var(--approved);
+  --color-rejected: var(--rejected);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #efede6;
+    --ink: #1b1a17;
+    --denim: #6f9bc0;
+    --marigold: #f2c169;
+    --moss: #82a684;
+    --clay: #d17e72;
+
+    --bg: var(--ink);
+    --fg: var(--paper);
+    --surface: #242320;
+    --surface-2: #2c2a26;
+    --border: rgb(239 237 230 / 14%);
+    --accent: var(--denim);
+    --accent-fg: var(--ink);
+    --pending: var(--marigold);
+    --review: var(--denim);
+    --approved: var(--moss);
+    --rejected: var(--clay);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@keyframes wheel-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(var(--wheel-final-angle, 1800deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

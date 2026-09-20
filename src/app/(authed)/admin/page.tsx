@@ -26,21 +26,19 @@ export default async function AdminPage() {
   return (
     <div className="flex flex-col gap-10">
       <div>
-        <h1 className="text-2xl font-semibold">Admin</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
-          Manage the household roster, chores, and weekly rotation.
-        </p>
+        <h1 className="text-2xl font-bold">Admin</h1>
+        <p className="text-sm text-fg/70">Manage the household roster, chores, and weekly rotation.</p>
       </div>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Cycle</h2>
+        <h2 className="text-lg font-bold">Cycle</h2>
         <GenerateCycleButton />
       </section>
 
       <PollingRefresher />
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Approvals</h2>
+        <h2 className="text-lg font-bold">Approvals</h2>
         <ApprovalsQueue approvals={approvals} />
       </section>
 

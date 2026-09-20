@@ -7,6 +7,7 @@ export async function getPendingApprovals(householdId: string) {
     .select({
       completionId: completions.id,
       choreName: chores.name,
+      memberId: members.id,
       memberName: members.name,
       cycleNumber: cycles.number,
       completedAt: completions.completedAt,

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSessionState } from "@/lib/session";
+import { WheelMark } from "@/components/WheelMark";
 import { sendMagicLink } from "./actions";
 
 export default async function SignInPage({
@@ -16,15 +17,16 @@ export default async function SignInPage({
 
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4">
-      <div>
-        <h1 className="text-2xl font-semibold">Chore Wheel</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
-          Enter your email and we&apos;ll send you a sign-in link.
-        </p>
+      <div className="flex flex-col items-center gap-3 text-center">
+        <WheelMark size={44} />
+        <div>
+          <h1 className="text-2xl font-bold">Chore Wheel</h1>
+          <p className="text-sm text-fg/70">Enter your email and we&apos;ll send you a sign-in link.</p>
+        </div>
       </div>
 
       {sent ? (
-        <p className="text-sm">Check your email for a sign-in link.</p>
+        <p className="text-center text-sm">Check your email for a sign-in link.</p>
       ) : (
         <form action={sendMagicLink} className="flex flex-col gap-3">
           <input
@@ -32,11 +34,11 @@ export default async function SignInPage({
             name="email"
             required
             placeholder="you@example.com"
-            className="rounded-md border border-black/20 px-3 py-2 text-sm dark:border-white/20 dark:bg-transparent"
+            className="rounded-md border border-border bg-surface px-3 py-2 text-sm"
           />
           <button
             type="submit"
-            className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-black"
+            className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-fg transition-colors hover:opacity-90"
           >
             Send magic link
           </button>
@@ -44,7 +46,7 @@ export default async function SignInPage({
       )}
 
       {process.env.NODE_ENV !== "production" && (
-        <p className="text-xs text-black/50 dark:text-white/50">
+        <p className="text-xs text-fg/50">
           Dev mode: set <code>DEV_MEMBER_ID</code> in <code>.env.local</code> to a seeded member id
           (<code>npm run seed</code>) to skip email sign-in entirely.
         </p>

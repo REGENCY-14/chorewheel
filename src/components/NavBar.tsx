@@ -1,8 +1,13 @@
-import Link from "next/link";
-import type { CurrentMember } from "@/lib/session";
-import { SignOutButton } from "./SignOutButton";
+"use client";
 
-export function NavBar({ member }: { member: CurrentMember }) {
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
+import type { CurrentMember } from "@/lib/session";
+import { Avatar } from "./Avatar";
+
+export function NavBar({ member, signOutSlot }: { member: CurrentMember; signOutSlot: ReactNode }) {
+  const pathname = usePathname();
   const links = [
     { href: "/board", label: "Board" },
     { href: "/mine", label: "Mine" },
@@ -13,22 +18,28 @@ export function NavBar({ member }: { member: CurrentMember }) {
   }
 
   return (
-    <nav className="border-b border-black/10 dark:border-white/10">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-        <div className="flex gap-4">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium hover:underline"
-            >
-              {link.label}
-            </Link>
-          ))}
+    <nav className="border-b border-border bg-surface">
+      <div className="mx-auto flex max-w-3xl items-center justify-between gap-2 px-4 py-3">
+        <div className="flex gap-1 overflow-x-auto sm:gap-2">
+          {links.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={`shrink-0 rounded-md px-2.5 py-1.5 text-sm font-semibold transition-colors ${
+                  active ? "bg-accent text-accent-fg" : "text-fg/70 hover:text-fg"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-black/60 dark:text-white/60">{member.name}</span>
-          <SignOutButton />
+        <div className="flex shrink-0 items-center gap-2">
+          <Avatar id={member.id} name={member.name} />
+          {signOutSlot}
         </div>
       </div>
     </nav>

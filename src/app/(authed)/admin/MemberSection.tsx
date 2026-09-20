@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Avatar } from "@/components/Avatar";
 
 type Member = { id: string; name: string; role: "admin" | "member" };
 
@@ -55,20 +56,23 @@ export function MemberSection({ members }: { members: Member[] }) {
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-lg font-semibold">Members</h2>
+      <h2 className="text-lg font-bold">Members</h2>
       <ul className="flex flex-col gap-2">
         {members.map((m) => (
           <li
             key={m.id}
-            className="flex items-center justify-between rounded-lg border border-black/10 px-4 py-2 dark:border-white/10"
+            className="flex items-center justify-between rounded-md border border-border bg-surface px-4 py-2.5"
           >
-            <span>
-              {m.name} <span className="text-xs text-black/50 dark:text-white/50">({m.role})</span>
+            <span className="flex items-center gap-3">
+              <Avatar id={m.id} name={m.name} />
+              <span>
+                {m.name} <span className="text-xs text-fg/60">({m.role})</span>
+              </span>
             </span>
             <button
               onClick={() => removeMember(m.id)}
               disabled={pending}
-              className="text-sm text-red-600 hover:underline disabled:opacity-50"
+              className="text-sm font-medium text-rejected hover:underline disabled:opacity-50"
             >
               Remove
             </button>
@@ -76,18 +80,18 @@ export function MemberSection({ members }: { members: Member[] }) {
         ))}
       </ul>
 
-      <form onSubmit={addMember} className="flex gap-2">
+      <form onSubmit={addMember} className="flex flex-wrap gap-2">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
           required
-          className="flex-1 rounded-md border border-black/20 px-3 py-1.5 text-sm dark:border-white/20 dark:bg-transparent"
+          className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2 text-sm"
         />
         <select
           value={role}
           onChange={(e) => setRole(e.target.value as "admin" | "member")}
-          className="rounded-md border border-black/20 px-2 py-1.5 text-sm dark:border-white/20 dark:bg-transparent"
+          className="rounded-md border border-border bg-surface px-2 py-2 text-sm"
         >
           <option value="member">Member</option>
           <option value="admin">Admin</option>
@@ -95,12 +99,12 @@ export function MemberSection({ members }: { members: Member[] }) {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-black"
+          className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-fg transition-colors hover:opacity-90 disabled:opacity-60"
         >
           Add
         </button>
       </form>
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-sm text-rejected">{error}</p>}
     </section>
   );
 }

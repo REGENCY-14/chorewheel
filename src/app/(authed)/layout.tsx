@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSessionState } from "@/lib/session";
 import { NavBar } from "@/components/NavBar";
+import { SignOutButton } from "@/components/SignOutButton";
 
 export default async function AuthedLayout({ children }: { children: React.ReactNode }) {
   const state = await getSessionState();
@@ -13,7 +14,7 @@ export default async function AuthedLayout({ children }: { children: React.React
 
   return (
     <>
-      <NavBar member={state.member} />
+      <NavBar member={state.member} signOutSlot={<SignOutButton />} />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6">{children}</main>
     </>
   );

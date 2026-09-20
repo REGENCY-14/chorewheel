@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Avatar } from "@/components/Avatar";
 
 export function ClaimList({ members }: { members: { id: string; name: string }[] }) {
   const router = useRouter();
@@ -27,7 +28,7 @@ export function ClaimList({ members }: { members: { id: string; name: string }[]
 
   if (members.length === 0) {
     return (
-      <p className="text-sm text-black/60 dark:text-white/60">
+      <p className="text-sm text-fg/70">
         No unclaimed names yet — ask an admin to add you in <code>/admin</code>.
       </p>
     );
@@ -40,12 +41,13 @@ export function ClaimList({ members }: { members: { id: string; name: string }[]
           key={m.id}
           onClick={() => claim(m.id)}
           disabled={pendingId !== null}
-          className="rounded-md border border-black/20 px-4 py-2 text-left text-sm disabled:opacity-50 dark:border-white/20"
+          className="flex items-center gap-3 rounded-md border border-border bg-surface px-4 py-2.5 text-left text-sm font-medium transition-colors hover:border-accent disabled:opacity-50"
         >
+          <Avatar id={m.id} name={m.name} />
           {pendingId === m.id ? "Claiming…" : m.name}
         </button>
       ))}
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-sm text-rejected">{error}</p>}
     </div>
   );
 }
